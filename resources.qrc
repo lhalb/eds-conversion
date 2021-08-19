@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/chart.png</file>
+    <file>icons/file.png</file>
+    <file>icons/folder.png</file>
+    <file>icons/green_light-512px.png</file>
+    <file>icons/red_light-512px.png</file>
+    <file>icons/start-512px.png</file>
+  </qresource>
+</RCC>

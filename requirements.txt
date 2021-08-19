@@ -1,0 +1,6 @@
+pandas
+numpy
+chardet
+matplotlib
+pyqt5~=5.15
+pyqt5-tools~=5.15
