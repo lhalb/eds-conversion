@@ -4,15 +4,17 @@ from PyQt5.QtWidgets import QMessageBox as QMB
 
 import edsgui as GUI
 from lib import edsHelper as eds
+import dialog as dia
 
 
 class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
-    def __init__(self):
+    def __init__(self, Parent=None):
         super(App, self).__init__()
         self.setupUi(self)  # Laden der UI-Datei
         self.root = QtCore.QFileInfo(__file__).absolutePath()
         self.setup_triggers()
         self.path = None
+        self.elements = None
         self.set_icons()
 
     def set_icons(self):
@@ -29,6 +31,23 @@ class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
 
         self.but_plot.clicked.connect(self.plot_file)
         self.but_process.clicked.connect(self.process_data)
+        self.pb_plotsettings.clicked.connect(self.show_dialog)
+
+
+    def show_dialog(self):
+        _, _, elements = eds.get_data(self.path)
+        mydialog = Dialog(elements)
+        # mydialog = QtWidgets.QDialog()
+        # mydialog.ui = dia.Ui_DiaColsToPlot()
+        # mydialog.ui.setupUi(mydialog)
+
+        if mydialog.exec_() == QtWidgets.QDialog.Accepted:
+            for idx in range(mydialog.list_dialog.count()):
+                item = mydialog.list_dialog.item(idx)
+                if item.checkState() == QtCore.Qt.Checked:
+                    print(f'{item.text()} ist angewählt')
+        else:
+            print('das hat nicht funktionier')
 
     def plot_file(self):
         file = self.path
@@ -70,16 +89,19 @@ class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
             self.status_file.setIcon(on_icon)
             self.status_folder.setIcon(off_icon)
             self.but_plot.setEnabled(True)
+            self.pb_plotsettings.setEnabled(True)
             self.but_process.setEnabled(True)
         elif file_or_path == 'ordner':
             self.status_file.setIcon(off_icon)
             self.status_folder.setIcon(on_icon)
             self.but_plot.setEnabled(False)
+            self.pb_plotsettings.setEnabled(False)
             self.but_process.setEnabled(True)
         else:
             self.status_file.setIcon(off_icon)
             self.status_folder.setIcon(off_icon)
             self.but_plot.setEnabled(False)
+            self.pb_plotsettings.setEnabled(False)
             self.but_process.setEnabled(False)
 
 
@@ -143,3 +165,40 @@ class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
         msg.setStandardButtons(QMB.Ok)
         msg.setDefaultButton(QMB.Ok)
         msg.exec()
+
+
+class Dialog(QtWidgets.QDialog, dia.Ui_DiaColsToPlot):
+    def __init__(self, elements):
+        super(Dialog, self).__init__()
+        #  testen, ob Daten übertragen werden
+        self.setupUi(self)
+
+        for el in elements:
+            self.add_item_to_list(el)
+
+        # self.list_dialog.addItems(elements)
+        # for i in range(self.list_dialog.count()):
+        #     item = self.list_dialog.item(i)
+        #     item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+        #     item.setCheckState(QtCore.Qt.Unchecked)
+
+        self.setup_triggers()
+
+    def add_item_to_list(self, text):
+        item = QtWidgets.QListWidgetItem()
+        item.setText(text)
+        item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+        item.setCheckState(QtCore.Qt.Unchecked)
+        self.list_dialog.addItem(item)
+
+    def setup_triggers(self):
+        self.buttonBox.accepted.connect(self.onAccept)
+        self.buttonBox.rejected.connect(self.onReject)
+
+    def onAccept(self):
+        print('Du hast "ok" gedrückt')
+        self.accept()
+
+    def onReject(self):
+        print('Du hast "Abbrechen" gedrückt')
+        self.reject()

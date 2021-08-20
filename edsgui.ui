@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>326</width>
-    <height>525</height>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -47,13 +47,46 @@
           </property>
           <property name="icon">
            <iconset>
-            <normalon>:/icons/icons/chart.png</normalon>
+            <normalon>:/icons/icons/chart-512px.png</normalon>
            </iconset>
           </property>
           <property name="iconSize">
            <size>
             <width>65</width>
             <height>65</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pb_plotsettings">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>35</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/icons/icons/settings-512px.png</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>35</width>
+            <height>35</height>
            </size>
           </property>
          </widget>
@@ -179,7 +212,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normalon>:/icons/icons/folder.png</normalon>
+          <normalon>:/icons/icons/folder-512px.png</normalon>
          </iconset>
         </property>
         <property name="iconSize">
@@ -253,14 +286,14 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>170</width>
-              <height>170</height>
+              <width>160</width>
+              <height>160</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>190</width>
-              <height>190</height>
+              <width>170</width>
+              <height>170</height>
              </size>
             </property>
             <property name="text">
@@ -357,7 +390,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normalon>:/icons/icons/file.png</normalon>
+          <normalon>:/icons/icons/file-512px.png</normalon>
          </iconset>
         </property>
         <property name="iconSize">
