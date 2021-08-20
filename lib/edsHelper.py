@@ -104,7 +104,7 @@ def plot_data(x, y, y2=None, messtyp=''):
     plt.show()
 
 
-def run_process(path, smooth_data=False, smooth_window=10, plot_only=False, dtype='.csv', output_folder=None):
+def run_process(path, smooth_data=False, smooth_window=10, plot_only=False, dtype='.csv', output_folder=''):
 
     smooth = smooth_data
     window = smooth_window
@@ -117,7 +117,6 @@ def run_process(path, smooth_data=False, smooth_window=10, plot_only=False, dtyp
 
         filename = op.split(f)[1]
 
-        print(op.splitext(f))
 
         # überspringe die bereits erstellten XLSX Dateien
         if op.splitext(f)[1] == dtype:
@@ -126,53 +125,55 @@ def run_process(path, smooth_data=False, smooth_window=10, plot_only=False, dtyp
             continue
 
         df, calc_type, elements = get_data(f)
-        print(df.head())
 
         if smooth:
             #  Setze den Wert der Ausgabevariablen
             export_data = get_smoothed_data(df, elements, window)
             if plot_only:
                 for el in elements:
-                    plot_data(df['Distance (um)'], df[f'{el} (raw)'], df[f'{el} (filt)'])
-                break
+                    plot_data(export_data['Distance (um)'],
+                              export_data[f'{el} (raw)'], export_data[f'{el} (filt)'],
+                              messtyp=calc_type)
         else:
             export_data = df
             if plot_only:
                 for el in elements:
-                    plot_data(df['Distance (um)'], df[el])
-                break
+                    plot_data(export_data['Distance (um)'], export_data[el], messtyp=calc_type)
 
-        if plot_only:
-            return
-
-
-        export_data['Filename'] = filename
-        export_data.iloc[1:, export_data.columns.get_loc('Filename')] = ''
+        if not plot_only:
+            export_data['Filename'] = filename
+            export_data.iloc[1:, export_data.columns.get_loc('Filename')] = ''
 
 
-        #  wenn der Ordner noch nicht abgearbeitet wurde
-        if processed_dir != old_dir:
-            # erzeuge neue Datei
-            mode = 'w'
+            #  wenn der Ordner noch nicht abgearbeitet wurde
+            if processed_dir != old_dir:
+                # erzeuge neue Datei
+                mode = 'w'
+            else:
+                #  Ansonsten schreibe in der aktuellen weiter
+                mode = 'a'
+
+            print(f)
+
+            if output_folder == '':
+                out_dir = op.dirname(f)
+                print(out_dir)
+            else:
+                out_dir = output_folder
+
+            fname = processed_dir + '.xlsx'
+
+            fout = op.join(out_dir, fname)
+
+            print(f'Ich würde unter {fout} im Modus {mode} speichern.')
+
+            write_data_to_file(export_data, fout, mode, calc_type)
+
+            # Setze den alten Ordner als aktuellen Ordner, um zu gewährleisten,
+            # dass man im gleichen Verzeichnis arbeitet
+            old_dir = processed_dir
         else:
-            #  Ansonsten schreibe in der aktuellen weiter
-            mode = 'a'
-
-        if output_folder == '':
-            out_dir = op.dirname(f)
-        else:
-            out_dir = output_folder
-
-        fname = processed_dir + '.xlsx'
-
-        fout = op.join(out_dir, fname)
-
-        print(f'Ich würde unter {fout} im Modus {mode} speichern.')
-
-        write_data_to_file(export_data, fout, mode, calc_type)
-
-        # Setze den alten Ordner als aktuellen Ordner, um zu gewährleisten, dass man im gleichen Verzeichnis arbeitet
-        old_dir = processed_dir
+            continue
 
 
 def check_path(p):

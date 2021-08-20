@@ -27,13 +27,13 @@ class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
         self.status_folder.clicked.connect(self.display_path_info)
         self.status_file.clicked.connect(self.display_path_info)
 
-        self.but_plot.clicked.connect(self.process_data)
+        self.but_plot.clicked.connect(self.plot_file)
         self.but_process.clicked.connect(self.process_data)
 
     def plot_file(self):
         file = self.path
         bool_smooth = self.gb_smooth.isChecked()
-        n = str(self.txt_smooth.text())
+        n = int(self.txt_smooth.text())
         eds.run_process(file, smooth_data=bool_smooth, smooth_window=n, plot_only=True)
 
     def process_data(self):
