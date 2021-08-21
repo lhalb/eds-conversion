@@ -14,13 +14,13 @@ class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
         self.root = QtCore.QFileInfo(__file__).absolutePath()
         self.setup_triggers()
         self.path = None
-        self.elements = None
+        self.elements = []
         self.set_icons()
 
     def set_icons(self):
         # Setze icon
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(self.root + "/icons/green_light-512px.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        icon.addPixmap(QtGui.QPixmap(self.root + "/icons/appicon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.setWindowIcon(icon)
 
     def setup_triggers(self):
@@ -31,29 +31,36 @@ class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
 
         self.but_plot.clicked.connect(self.plot_file)
         self.but_process.clicked.connect(self.process_data)
-        self.pb_plotsettings.clicked.connect(self.show_dialog)
+        self.pb_plotsettings.clicked.connect(self.get_elements_to_plot)
 
 
-    def show_dialog(self):
-        _, _, elements = eds.get_data(self.path)
-        mydialog = Dialog(elements)
-        # mydialog = QtWidgets.QDialog()
-        # mydialog.ui = dia.Ui_DiaColsToPlot()
-        # mydialog.ui.setupUi(mydialog)
+    def get_elements_to_plot(self):
+        # rufe die get_data-Funktion aus der Helper-Klasse auf, damit elementliste geladen wird
+        _, _, els = eds.get_data(self.path)
 
+        # lade das Dialogfenster
+        mydialog = Dialog(els)
+
+        # initialisiere die Elementliste
+        elements_to_plot = []
+
+        # Wenn das Dialogfenster mit "OK" geschlossen wird:
         if mydialog.exec_() == QtWidgets.QDialog.Accepted:
+            # iteriere über die Listenelemente (hier wird item aus Dialogklasse aufgerufen
             for idx in range(mydialog.list_dialog.count()):
                 item = mydialog.list_dialog.item(idx)
+                # wenn Listenelement angewählt ist:
                 if item.checkState() == QtCore.Qt.Checked:
-                    print(f'{item.text()} ist angewählt')
-        else:
-            print('das hat nicht funktionier')
+                    elements_to_plot.append(item.text())
+
+        self.elements = elements_to_plot
 
     def plot_file(self):
         file = self.path
         bool_smooth = self.gb_smooth.isChecked()
         n = int(self.txt_smooth.text())
-        eds.run_process(file, smooth_data=bool_smooth, smooth_window=n, plot_only=True)
+        elements_to_plot = self.elements
+        eds.run_process(file, smooth_data=bool_smooth, smooth_window=n, plot_only=True, plot_elements=elements_to_plot)
 
     def process_data(self):
         file = self.path

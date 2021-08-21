@@ -184,7 +184,7 @@ class Ui_edxKonverter(object):
         icon5.addPixmap(QtGui.QPixmap(":/icons/icons/file-512px.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.but_open_file.setIcon(icon5)
         self.but_open_file.setIconSize(QtCore.QSize(130, 130))
-        self.but_open_file.setDefault(True)
+        self.but_open_file.setDefault(False)
         self.but_open_file.setFlat(False)
         self.but_open_file.setObjectName("but_open_file")
         self.gridLayout.addWidget(self.but_open_file, 0, 0, 1, 1)
@@ -206,9 +206,18 @@ class Ui_edxKonverter(object):
     def retranslateUi(self, edxKonverter):
         _translate = QtCore.QCoreApplication.translate
         edxKonverter.setWindowTitle(_translate("edxKonverter", "edx-Konverter"))
+        self.but_plot.setToolTip(_translate("edxKonverter", "<html><head/><body><p>Plottet die Elementdaten<br/><span style=\" font-weight:600;\">(nur aktiv, wenn einzelne Datei angewählt ist)</span></p><p>Über Einstellungsbutton können einzlene Elemente an- und abgewählt werden.</p></body></html>"))
+        self.pb_plotsettings.setToolTip(_translate("edxKonverter", "<html><head/><body><p>Einzelne Elemente zum plotten an- oder abwählen</p></body></html>"))
+        self.gb_smooth.setToolTip(_translate("edxKonverter", "Stellt ein, ob die Werte mit gleitendem Durchschnitt geglättet werden"))
         self.gb_smooth.setTitle(_translate("edxKonverter", "Glätten"))
+        self.txt_smooth.setToolTip(_translate("edxKonverter", "Anzahl der Werte, über die geglättet wird"))
         self.txt_smooth.setText(_translate("edxKonverter", "20"))
         self.txt_smooth.setPlaceholderText(_translate("edxKonverter", "Anzahl Glättungspunkte"))
+        self.but_open_folder.setToolTip(_translate("edxKonverter", "<html><head/><body><p>Ordner öffnen.</p><p>Dateien sollten vorher in folgende Struktur gebracht werden: </p><p>Ebene 0<br/>  ˪ Ordner 1<br/>    ˪ CSV-1<br/>    ˪ ...<br/>    ˪ CSV-n</p><p>  ˪ Ordner 2<br/>    ˪ CSV-1<br/>    ˪ ...<br/>    ˪ CSV-n</p><p>...</p><p>  ˪ Ordner n<br/>    ˪ CSV-1<br/>    ˪ ...<br/>    ˪ CSV-n</p></body></html>"))
+        self.status_folder.setToolTip(_translate("edxKonverter", "<html><head/><body><p>Statusinformationen zu Dateien/Ordnern</p></body></html>"))
+        self.but_process.setToolTip(_translate("edxKonverter", "Konvertiert die ausgewählte Datei/die ausgewählten Dateien in .xlsx-Dateien"))
+        self.status_file.setToolTip(_translate("edxKonverter", "<html><head/><body><p>Statusinformationen zu Dateien/Ordnern</p></body></html>"))
+        self.but_open_file.setToolTip(_translate("edxKonverter", "<html><head/><body><p>Datei öffnen.</p><p>Auswählbare Dateien: <br/>- *.csv</p></body></html>"))
 import resources_rc
 
 

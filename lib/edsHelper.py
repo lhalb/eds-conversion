@@ -91,7 +91,7 @@ def get_smoothed_data(df, elements, n):
     return df_out
 
 
-def plot_data(x, y, y2=None, messtyp=''):
+def plot_data(x, y, y2=None, messtyp='', n=''):
     plt.figure()
     plt.plot(x, y, 'b-', label='Rohdaten')
     if y2 is None:
@@ -99,12 +99,14 @@ def plot_data(x, y, y2=None, messtyp=''):
     else:
         plt.plot(x, y2, 'r-', label='Geglättet')
     plt.legend()
-    plt.ylabel(f'{y.name}-{messtyp}')
-    plt.xlabel(x.name)
+    plt.ylabel(f'{y.name}-{messtyp}', fontweight='bold')
+    plt.xlabel(x.name, fontweight='bold')
+    plt.title(f'{y.name.split(" ")[0]}, Art:{messtyp}, n={n}', fontsize=12, fontweight='bold')
     plt.show()
 
 
-def run_process(path, smooth_data=False, smooth_window=10, plot_only=False, dtype='.csv', output_folder=''):
+def run_process(path, smooth_data=False, smooth_window=10,
+                plot_only=False, dtype='.csv', output_folder='', plot_elements=False):
 
     smooth = smooth_data
     window = smooth_window
@@ -117,7 +119,6 @@ def run_process(path, smooth_data=False, smooth_window=10, plot_only=False, dtyp
 
         filename = op.split(f)[1]
 
-
         # überspringe die bereits erstellten XLSX Dateien
         if op.splitext(f)[1] == dtype:
             pass
@@ -126,19 +127,24 @@ def run_process(path, smooth_data=False, smooth_window=10, plot_only=False, dtyp
 
         df, calc_type, elements = get_data(f)
 
+        if not plot_elements:
+            elements_to_plot = elements
+        else:
+            elements_to_plot = plot_elements
+
         if smooth:
             #  Setze den Wert der Ausgabevariablen
             export_data = get_smoothed_data(df, elements, window)
             if plot_only:
-                for el in elements:
+                for el in elements_to_plot:
                     plot_data(export_data['Distance (um)'],
                               export_data[f'{el} (raw)'], export_data[f'{el} (filt)'],
-                              messtyp=calc_type)
+                              messtyp=calc_type, n=window)
         else:
             export_data = df
             if plot_only:
-                for el in elements:
-                    plot_data(export_data['Distance (um)'], export_data[el], messtyp=calc_type)
+                for el in elements_to_plot:
+                    plot_data(export_data['Distance (um)'], export_data[el], messtyp=calc_type, n=window)
 
         if not plot_only:
             export_data['Filename'] = filename

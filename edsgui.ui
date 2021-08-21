@@ -42,6 +42,9 @@
             <height>75</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plottet die Elementdaten&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;(nur aktiv, wenn einzelne Datei angewählt ist)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Über Einstellungsbutton können einzlene Elemente an- und abgewählt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -74,6 +77,9 @@
             <width>35</width>
             <height>35</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Einzelne Elemente zum plotten an- oder abwählen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string/>
@@ -122,6 +128,9 @@
             <pointsize>16</pointsize>
            </font>
           </property>
+          <property name="toolTip">
+           <string>Stellt ein, ob die Werte mit gleitendem Durchschnitt geglättet werden</string>
+          </property>
           <property name="title">
            <string>Glätten</string>
           </property>
@@ -157,6 +166,9 @@
                <family>Dubai Medium</family>
                <pointsize>10</pointsize>
               </font>
+             </property>
+             <property name="toolTip">
+              <string>Anzahl der Werte, über die geglättet wird</string>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LeftToRight</enum>
@@ -207,6 +219,9 @@
           <height>150</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ordner öffnen.&lt;/p&gt;&lt;p&gt;Dateien sollten vorher in folgende Struktur gebracht werden: &lt;/p&gt;&lt;p&gt;Ebene 0&lt;br/&gt;  ˪ Ordner 1&lt;br/&gt;    ˪ CSV-1&lt;br/&gt;    ˪ ...&lt;br/&gt;    ˪ CSV-n&lt;/p&gt;&lt;p&gt;  ˪ Ordner 2&lt;br/&gt;    ˪ CSV-1&lt;br/&gt;    ˪ ...&lt;br/&gt;    ˪ CSV-n&lt;/p&gt;&lt;p&gt;...&lt;/p&gt;&lt;p&gt;  ˪ Ordner n&lt;br/&gt;    ˪ CSV-1&lt;br/&gt;    ˪ ...&lt;br/&gt;    ˪ CSV-n&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -241,6 +256,9 @@
             <width>40</width>
             <height>40</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Statusinformationen zu Dateien/Ordnern&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string/>
@@ -296,6 +314,9 @@
               <height>170</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>Konvertiert die ausgewählte Datei/die ausgewählten Dateien in .xlsx-Dateien</string>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -347,6 +368,9 @@
             <height>40</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Statusinformationen zu Dateien/Ordnern&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -385,6 +409,9 @@
           <height>150</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Datei öffnen.&lt;/p&gt;&lt;p&gt;Auswählbare Dateien: &lt;br/&gt;- *.csv&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -400,7 +427,7 @@
          </size>
         </property>
         <property name="default">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="flat">
          <bool>false</bool>

@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['main.py'],
-             pathex=['C:\\Users\\ebeam\\PycharmProjects\\eds-conversion\\main.py'],
+             pathex=['C:\\Users\\Lars\\PycharmProjects\\eds-conv\\main.py'],
              binaries=[],
              datas=[],
              hiddenimports=['scipy.special.cython_special'],
@@ -22,12 +22,15 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas + [
-          ('icons/chart.png', 'icons/chart.png', 'DATA'),
-          ('icons/file.png', 'icons/file.png', 'DATA'),
-          ('icons/folder.png', 'icons/folder.png', 'DATA'),
+          ('icons/appicon.ico', 'icons/appicon.ico', 'DATA'),
+          ('icons/chart-512px.png', 'icons/chart-512px.png', 'DATA'),
+          ('icons/file-512px.png', 'icons/file-512px.png', 'DATA'),
+          ('icons/folder-512px.png', 'icons/folder-512px.png', 'DATA'),
           ('icons/green_light-512px.png', 'icons/green_light-512px.png', 'DATA'),
           ('icons/red_light-512px.png', 'icons/red_light-512px.png', 'DATA'),
           ('icons/start-512px.png', 'icons/start-512px.png', 'DATA'),
+          ('icons/settings-512px.png', 'icons/settings-512px.png', 'DATA'),
+          ('icons/start-512px.png', 'icons/start-512px.png', 'DATA')
           ],
           [],
           name='EDS-Analysis',
