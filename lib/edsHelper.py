@@ -6,22 +6,25 @@ Script zum Einlesen von EDX-Linenscans aus dem REM
 Author: Hollmann
 Date: 2019-07-03
 """
-import matplotlib
-import numpy as np
+# import matplotlib
+# import numpy as np
 
-matplotlib.use('Qt5Agg')
-import matplotlib.pyplot as plt
+# matplotlib.use('Qt5Agg')
+# import matplotlib.pyplot as plt
 import pandas as pd
-from os import listdir, walk
+from os import walk
 import os.path as op
+
 
 def write_data_to_file(df, path, mode, sheet_name):
     with pd.ExcelWriter(path, mode=mode) as writer:
         df.to_excel(writer, sheet_name=sheet_name)
     return
 
+
 def gleit_durch(x, N=20):
     return x.rolling(window=N).mean()
+
 
 def get_data(fname):
     """
@@ -54,6 +57,7 @@ def get_data(fname):
     type = info.values[11, 1]  # hier steht, ob es ROI, AT% oder WT% ist
     elements = head[2:-2:1]
     return df, type, elements
+
 
 def get_files_to_process(path):
     files_to_process = []
@@ -91,18 +95,18 @@ def get_smoothed_data(df, elements, n):
     return df_out
 
 
-def plot_data(x, y, y2=None, messtyp='', n=''):
-    plt.figure()
-    plt.plot(x, y, 'b-', label='Rohdaten')
-    if y2 is None:
-        pass
-    else:
-        plt.plot(x, y2, 'r-', label='Geglättet')
-    plt.legend()
-    plt.ylabel(f'{y.name}-{messtyp}', fontweight='bold')
-    plt.xlabel(x.name, fontweight='bold')
-    plt.title(f'{y.name.split(" ")[0]}, Art:{messtyp}, n={n}', fontsize=12, fontweight='bold')
-    plt.show()
+# def plot_data(x, y, y2=None, messtyp='', n=''):
+#     plt.figure()
+#     plt.plot(x, y, 'b-', label='Rohdaten')
+#     if y2 is None:
+#         pass
+#     else:
+#         plt.plot(x, y2, 'r-', label='Geglättet')
+#     plt.legend()
+#     plt.ylabel(f'{y.name}-{messtyp}', fontweight='bold')
+#     plt.xlabel(x.name, fontweight='bold')
+#     plt.title(f'{y.name.split(" ")[0]}, Art:{messtyp}, n={n}', fontsize=12, fontweight='bold')
+#     plt.show()
 
 
 def run_process(path, smooth_data=False, smooth_window=10,
@@ -135,16 +139,16 @@ def run_process(path, smooth_data=False, smooth_window=10,
         if smooth:
             #  Setze den Wert der Ausgabevariablen
             export_data = get_smoothed_data(df, elements, window)
-            if plot_only:
-                for el in elements_to_plot:
-                    plot_data(export_data['Distance (um)'],
-                              export_data[f'{el} (raw)'], export_data[f'{el} (filt)'],
-                              messtyp=calc_type, n=window)
+            # if plot_only:
+            #     for el in elements_to_plot:
+            #         plot_data(export_data['Distance (um)'],
+            #                   export_data[f'{el} (raw)'], export_data[f'{el} (filt)'],
+            #                   messtyp=calc_type, n=window)
         else:
             export_data = df
-            if plot_only:
-                for el in elements_to_plot:
-                    plot_data(export_data['Distance (um)'], export_data[el], messtyp=calc_type, n=window)
+            # if plot_only:
+            #     for el in elements_to_plot:
+            #         plot_data(export_data['Distance (um)'], export_data[el], messtyp=calc_type, n=window)
 
         if not plot_only:
             export_data['Filename'] = filename

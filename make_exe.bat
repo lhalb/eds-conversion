@@ -1,3 +1,2 @@
 echo off
-REM pyinstaller --onefile mainfile.spec
-pyinstaller mainfile.spec
+pyinstaller --onefile mainfile.spec

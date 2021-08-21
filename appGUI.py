@@ -5,10 +5,11 @@ from PyQt5.QtWidgets import QMessageBox as QMB
 import edsgui as GUI
 from lib import edsHelper as eds
 import dialog as dia
+from lib.edsPlot import PlotDialog
 
 
 class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
-    def __init__(self, Parent=None):
+    def __init__(self):
         super(App, self).__init__()
         self.setupUi(self)  # Laden der UI-Datei
         self.root = QtCore.QFileInfo(__file__).absolutePath()
@@ -29,45 +30,31 @@ class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
         self.status_folder.clicked.connect(self.display_path_info)
         self.status_file.clicked.connect(self.display_path_info)
 
-        self.but_plot.clicked.connect(self.plot_file)
         self.but_process.clicked.connect(self.process_data)
-        self.pb_plotsettings.clicked.connect(self.get_elements_to_plot)
 
+        self.but_plot.clicked.connect(self.show_plot_window)
 
-    def get_elements_to_plot(self):
-        # rufe die get_data-Funktion aus der Helper-Klasse auf, damit elementliste geladen wird
-        _, _, els = eds.get_data(self.path)
-
-        # lade das Dialogfenster
-        mydialog = Dialog(els)
-
-        # initialisiere die Elementliste
-        elements_to_plot = []
-
-        # Wenn das Dialogfenster mit "OK" geschlossen wird:
-        if mydialog.exec_() == QtWidgets.QDialog.Accepted:
-            # iteriere über die Listenelemente (hier wird item aus Dialogklasse aufgerufen
-            for idx in range(mydialog.list_dialog.count()):
-                item = mydialog.list_dialog.item(idx)
-                # wenn Listenelement angewählt ist:
-                if item.checkState() == QtCore.Qt.Checked:
-                    elements_to_plot.append(item.text())
-
-        self.elements = elements_to_plot
-
-    def plot_file(self):
-        file = self.path
-        bool_smooth = self.gb_smooth.isChecked()
-        n = int(self.txt_smooth.text())
-        elements_to_plot = self.elements
-        eds.run_process(file, smooth_data=bool_smooth, smooth_window=n, plot_only=True, plot_elements=elements_to_plot)
+    def show_plot_window(self):
+        path = self.path
+        try:
+            data, calc_type, elements = eds.get_data(path)
+        except IndexError:
+            self.show_error_box('Datentyp falsch!')
+            return
+        smooth = self.gb_smooth.isChecked()
+        window = int(self.txt_smooth.text())
+        plt = PlotDialog(data, calc_type, elements, smooth, window)
+        plt.exec_()
 
     def process_data(self):
         file = self.path
-        print(file)
         bool_smooth = self.gb_smooth.isChecked()
         n = int(self.txt_smooth.text())
-        eds.run_process(file, smooth_data=bool_smooth, smooth_window=n)
+        try:
+            eds.run_process(file, smooth_data=bool_smooth, smooth_window=n)
+        except IndexError:
+            self.show_error_box('Datentyp falsch!')
+            return
 
     def display_path_info(self):
         p = self.path
@@ -96,19 +83,19 @@ class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
             self.status_file.setIcon(on_icon)
             self.status_folder.setIcon(off_icon)
             self.but_plot.setEnabled(True)
-            self.pb_plotsettings.setEnabled(True)
+            # self.pb_plotsettings.setEnabled(True)
             self.but_process.setEnabled(True)
         elif file_or_path == 'ordner':
             self.status_file.setIcon(off_icon)
             self.status_folder.setIcon(on_icon)
             self.but_plot.setEnabled(False)
-            self.pb_plotsettings.setEnabled(False)
+            # self.pb_plotsettings.setEnabled(False)
             self.but_process.setEnabled(True)
         else:
             self.status_file.setIcon(off_icon)
             self.status_folder.setIcon(off_icon)
             self.but_plot.setEnabled(False)
-            self.pb_plotsettings.setEnabled(False)
+            # self.pb_plotsettings.setEnabled(False)
             self.but_process.setEnabled(False)
 
 
@@ -177,17 +164,10 @@ class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
 class Dialog(QtWidgets.QDialog, dia.Ui_DiaColsToPlot):
     def __init__(self, elements):
         super(Dialog, self).__init__()
-        #  testen, ob Daten übertragen werden
         self.setupUi(self)
 
         for el in elements:
             self.add_item_to_list(el)
-
-        # self.list_dialog.addItems(elements)
-        # for i in range(self.list_dialog.count()):
-        #     item = self.list_dialog.item(i)
-        #     item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-        #     item.setCheckState(QtCore.Qt.Unchecked)
 
         self.setup_triggers()
 
@@ -203,9 +183,7 @@ class Dialog(QtWidgets.QDialog, dia.Ui_DiaColsToPlot):
         self.buttonBox.rejected.connect(self.onReject)
 
     def onAccept(self):
-        print('Du hast "ok" gedrückt')
         self.accept()
 
     def onReject(self):
-        print('Du hast "Abbrechen" gedrückt')
         self.reject()
