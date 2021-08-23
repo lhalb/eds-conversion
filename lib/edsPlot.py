@@ -70,11 +70,14 @@ class PlotDialog(QtWidgets.QDialog, PLT.Ui_PlotWindow):
 
     def toggle_smooth(self):
         if self.cb_toggle_smooth.isChecked():
+            self.smooth = True
             self.activate_slider()
             self.activate_smooth()
         else:
+            self.smooth = False
             self.deactivate_slider()
             self.deactivate_smooth()
+
 
     def initialize_plot(self):
         self.graphWidget.setBackground('w')
@@ -159,5 +162,5 @@ class PlotDialog(QtWidgets.QDialog, PLT.Ui_PlotWindow):
         self.graphWidget.removeItem(self.c2)
 
     def activate_smooth(self):
-        self.update_smooth()
         self.graphWidget.addItem(self.c2)
+        self.update_smooth()

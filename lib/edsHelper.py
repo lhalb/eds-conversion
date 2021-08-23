@@ -163,11 +163,11 @@ def run_process(path, smooth_data=False, smooth_window=10,
                 #  Ansonsten schreibe in der aktuellen weiter
                 mode = 'a'
 
-            print(f)
+            # print(f)
 
             if output_folder == '':
                 out_dir = op.dirname(f)
-                print(out_dir)
+                # print(out_dir)
             else:
                 out_dir = output_folder
 
@@ -175,7 +175,7 @@ def run_process(path, smooth_data=False, smooth_window=10,
 
             fout = op.join(out_dir, fname)
 
-            print(f'Ich würde unter {fout} im Modus {mode} speichern.')
+            # print(f'Ich würde unter {fout} im Modus {mode} speichern.')
 
             write_data_to_file(export_data, fout, mode, calc_type)
 

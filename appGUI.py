@@ -56,17 +56,19 @@ class App(QtWidgets.QMainWindow, GUI.Ui_edxKonverter):
             self.show_error_box('Datentyp falsch!')
             return
 
+        self.show_info_box(f'Alle Daten erfolgreich unter\n{self.path}\nbearbeitet.')
+
     def display_path_info(self):
         p = self.path
         file_or_path = eds.check_path(p)
-        print(file_or_path)
+        # print(file_or_path)
         if file_or_path == 'datei':
             txt = f'Geladene Datei: \n{p}'
         elif file_or_path == 'ordner':
             txt = f'Geladenes Verzeichnis: \n{p}'
         else:
             txt = 'Es wurde keine Datei oder Verzeichnis geladen'
-            print(txt)
+            # print(txt)
 
         self.show_info_box(txt)
 
